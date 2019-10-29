@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row title-row">
+        <div class="col-12">
+            <h3>Event details</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table id="event-details-table" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Place</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Date from</th>
+                    <th scope="col">Date to</th>
+                    <th scope="col">Lat</th>
+                    <th scope="col">Lng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.place }}</td>
+                    <td>{{ data.description }}</td>
+                    <td>{{ data.address }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>{{ data.dateFrom | date('Y-m-d') }}</td>
+                    <td>{{ data.dateTo | date('Y-m-d')}}</td>
+                    <td>{{ data.lat }}</td>
+                    <td>{{ data.lng }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-left">
+            <a class="btn btn-primary btn-sm" href="{{ url('show_localisation') }}">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

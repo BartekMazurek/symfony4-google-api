@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row home-row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">EventLocalisation Storage</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Simple application with Google GeoApi</h6>
+                    <p class="card-text">
+                        Application allows you to add some information about events.
+                        While form submission it will call Google GeoApi to get latitute and longitute parameters of event address. At the end it will send email notification about new record.
+                        Use top navbar to navigate application.
+                    </p>
+                    <p class="card-text"><b>Author:</b> Bartłomiej Mazurek - bartlomiejmazurek9@gmail.com - <a href="https://github.com/BartekMazurek/ ">GitHub</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

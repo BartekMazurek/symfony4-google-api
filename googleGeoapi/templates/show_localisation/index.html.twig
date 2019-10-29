@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventLocalisation Storage simple app!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div id="search-event-row" class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <input type="text" class="form-control" id="eventsSearchForm" placeholder="eg. Warszawa Domaniewska">
+                <small id="passwordHelpInline" class="text-muted">
+                    Search for events
+                </small>
+            </div>
+        </div>
+    </div>
+    <div id="events-table-row" class="row">
+        <div class="col-12">
+            <table id="events-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Place</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    window.addEventListener('load', loadResults,false);
+
+    let searchForm = document.querySelector('#eventsSearchForm');
+    searchForm.addEventListener('keyup', function() {
+        if (checkSearch() == 'no') {
+            startSearch();
+            let inputValue = getSearchValue();
+            if (inputValue.length > 0) {
+                loadSearchResults();
+            } else {
+                clearTableRows();
+                loadResults();
+            }
+        }
+    }, false);
+
+    function getBaseUrl() {
+        return location.protocol + '//'  +location.hostname + (location.port ? ':' + location.port: '');
+    }
+
+    function renderResults(results) {
+        resultTable = document.querySelector('#events-table');
+        resultTableTbody = resultTable.children[1];
+
+        for (let i=0; i < results.length; i++) {
+            resultRow = document.createElement('tr');
+            resultPlaceColumn = document.createElement('td');
+            resultPlaceContent = document.createTextNode(results[i]['place']);
+            resultAddressColumn = document.createElement('td');
+            resultAddressContent = document.createTextNode(results[i]['address']);
+            resultDetailsColumn = document.createElement('td');
+            resultAnchor = document.createElement('a');
+            resultAnchorContent = document.createTextNode('Details');
+            resultAnchor.append(resultAnchorContent);
+            resultAnchor.href = getBaseUrl() + '/show/localisation/event/' + results[i]['id'];
+
+            resultPlaceColumn.append(resultPlaceContent);
+            resultAddressColumn.append(resultAddressContent);
+            resultDetailsColumn.append(resultAnchor);
+
+            resultRow.append(resultPlaceColumn);
+            resultRow.append(resultAddressColumn);
+            resultRow.append(resultDetailsColumn);
+            resultTableTbody.append(resultRow);
+        }
+    }
+
+    function noResults() {
+        resultTable = document.querySelector('#events-table');
+        resultTableTbody = resultTable.children[1];
+        noDataRow = document.createElement('tr');
+        noDataRowColumn = document.createElement('td');
+        noDataRowColumn.colSpan = 3;
+        noDataContent = document.createTextNode('No data, sorry...');
+        noDataRowColumn.append(noDataContent);
+        noDataRow.append(noDataRowColumn);
+        resultTableTbody.append(noDataRow);
+    }
+
+    function clearTableRows() {
+        resultTable = document.querySelector('#events-table');
+        resultTableTbody = resultTable.children[1];
+        while (resultTableTbody.firstChild) {
+            resultTableTbody.removeChild(resultTableTbody.firstChild);
+        }
+    }
+
+    function getSearchValue() {
+        let searchInput = document.querySelector('#eventsSearchForm');
+        return searchInput.value;
+    }
+
+    function startSearch() {
+        sessionStorage.setItem('search', 'yes');
+    }
+
+    function stopSearch() {
+        sessionStorage.setItem('search', 'no');
+    }
+
+    function checkSearch() {
+        return sessionStorage.getItem('search');
+    }
+
+    function loadResults() {
+        let url = getBaseUrl() + '/show/localisation/data';
+        fetch(url)
+            .then(response => {
+                return response.json();
+            })
+            .then(response => {
+                results = JSON.parse(response);
+                if (results.length > 0) {
+                    renderResults(results);
+                } else {
+                    noResults();
+                }
+                stopSearch();
+            })
+    }
+
+    function loadSearchResults() {
+        clearTableRows();
+        let searchQuery = getSearchValue();
+        let url = getBaseUrl() + '/show/localisation/data/' + searchQuery;
+        fetch(url)
+            .then(response => {
+                return response.json();
+            })
+            .then(response => {
+                results = JSON.parse(response);
+                if (results.length > 0) {
+                    renderResults(results);
+                } else {
+                    noResults();
+                }
+                stopSearch();
+            })
+    }
+</script>
+{% endblock %}

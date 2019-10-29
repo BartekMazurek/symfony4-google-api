@@ -1,0 +1,37 @@
+.home-row {
+    margin-top: 50px;
+}
+
+#event-form-row {
+    margin-top: 50px;
+    -webkit-box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.3);
+    box-shadow: 2px 2px 5px 0 rgba(0,0,0,0.3);
+}
+
+#event-form-row form {
+    padding: 30px;
+    font-size: 13px;
+}
+
+#search-event-row,
+.title-row {
+    margin-top: 50px;
+}
+
+#events-table-row {
+    margin-top: 20px;
+}
+
+#events-table tr th:nth-child(3) {
+    width: 15%;
+}
+
+#events-table tr th:first-child,
+#events-table tr th:nth-child(2) {
+    width: 43%;
+}
+
+#events-table,
+#event-details-table {
+    font-size: 13px;
+}
